@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Викторина Цифровой Трансформации</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #0a45a0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 80px;
+    }
+
+    .wrapper {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #0a45a0;
+      border-radius: 20px;
+      padding: 40px 48px;
+      width: 720px;
+      text-align: center;
+      border: 3px solid #ffffff;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .question {
+      font-size: 40px;
+      margin-bottom: 40px;
+      line-height: 1.25;
+    }
+
+    .option {
+      background: #ffffff;
+      color: #0a45a0;
+      padding: 25px;
+      border-radius: 12px;
+      font-size: 32px;
+      margin: 20px 0;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      font-weight: 500;
+    }
+
+    .option:hover {
+      background: #dbe8ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    #result-section {
+      display: none;
+    }
+
+    #ai-dept {
+      display: none;
+    }
+
+    .result-title {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .result-text {
+      font-size: 32px;
+      margin-bottom: 32px;
+      line-height: 1.3;
+    }
+
+    .primary-link,
+    .secondary-link {
+      display: inline-block;
+      padding: 18px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 28px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .primary-link {
+      background: #ffffff;
+      color: #0a45a0;
+    }
+
+    .primary-link:hover {
+      background: #dbe8ff;
+    }
+
+    .secondary-link {
+      border: 2px solid #ffffff;
+      color: #ffffff;
+    }
+
+    .secondary-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .result-image {
+      margin-top: 32px;
+      max-width: 100%;
+      border-radius: 16px;
+      border: 2px solid #ffffff;
+    }
+
+    .section-title {
+      font-size: 44px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .placeholder {
+      font-size: 28px;
+      opacity: 0.9;
+      margin-bottom: 32px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Логотип Новосибирска -->
+    <img class="logo" src="logo.png" alt="Новосибирск" />
+  </header>
+
+  <div class="wrapper">
+    <!-- Блок викторины -->
+    <div class="card" id="quiz-section">
+      <div class="question" id="q">1. Вам интересно работать с нейросетями, алгоритмами и данными?</div>
+      <div class="option" onclick="next(1)">Да, очень нравится</div>
+      <div class="option" onclick="next(0)">Скорее нет</div>
+    </div>
+
+    <!-- Блок результата для ИИ-отдела -->
+    <div class="card" id="result-section">
+      <div class="result-title">Вам явно интересен ИИ!</div>
+      <div class="result-text">
+        Давайте узнаем поподробнее про отдел технологий ИИ?
+      </div>
+      <a href="#ai-dept" class="primary-link" onclick="openAIDept(event)">
+        Перейти к отделу технологий ИИ
+      </a>
+      <!-- Вторая картинка на экране результата -->
+      <img
+        class="result-image"
+        src="logo.png"
+        alt="Отдел технологий ИИ"
+      />
+    </div>
+
+    <!-- Вкладка с отделом ИИ -->
+    <div class="card" id="ai-dept">
+      <div class="section-title">Отдел технологий искусственного интеллекта — это…</div>
+      <p class="placeholder">
+        Здесь позже появится подробное описание отдела технологий искусственного интеллекта.
+      </p>
+      <a href="#quiz" class="secondary-link" onclick="backToQuiz(event)">
+        Вернуться к викторине
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "1. Вам интересно работать с нейросетями, алгоритмами и данными?",
+      "2. Вам нравится экспериментировать с новыми цифровыми технологиями?",
+      "3. Хотите ли вы участвовать в разработке ИИ для решений городского уровня?",
+      "4. Любите ли вы искать закономерности и оптимизировать процессы?",
+      "5. Готовы ли вы изучать новые инструменты машинного обучения?"
+    ];
+
+    let index = 0;
+    let score = 0;
+
+    function showQuestion() {
+      document.getElementById("q").innerText = questions[index];
+    }
+
+    function next(point) {
+      score += point;
+      index++;
+
+      if (index >= questions.length) {
+        finish();
+      } else {
+        showQuestion();
+      }
+    }
+
+    function finish() {
+      const quiz = document.getElementById("quiz-section");
+      const result = document.getElementById("result-section");
+
+      quiz.style.display = "none";
+      result.style.display = "block";
+    }
+
+    function openAIDept(event) {
+      event.preventDefault();
+      document.getElementById("result-section").style.display = "none";
+      document.getElementById("ai-dept").style.display = "block";
+    }
+
+    function backToQuiz(event) {
+      event.preventDefault();
+      index = 0;
+      score = 0;
+      showQuestion();
+      document.getElementById("ai-dept").style.display = "none";
+      document.getElementById("quiz-section").style.display = "block";
+    }
+  </script>
+</body>
+</html>
