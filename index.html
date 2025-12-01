@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Викторина Цифровой Трансформации</title>
+  <title>Центр цифровой трансформации — Викторина и профориентация</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -27,12 +25,37 @@
       width: 100%;
       padding: 24px 40px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
     }
 
-    .logo {
-      height: 80px;
+    .logo { height: 80px; }
+
+    .tabs {
+      width: 100%;
+      padding: 0 40px 24px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 2px solid #ffffff;
+      background: transparent;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #0a45a0;
+      transform: translateY(-1px);
     }
 
     .wrapper {
@@ -41,203 +64,632 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-bottom: 40px;
     }
 
     .card {
       background: #0a45a0;
       border-radius: 20px;
       padding: 40px 48px;
-      width: 720px;
-      text-align: center;
+      width: 880px;
+      max-height: 1680px;
       border: 3px solid #ffffff;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      overflow-y: auto;
     }
 
-    .question {
-      font-size: 40px;
-      margin-bottom: 40px;
-      line-height: 1.25;
+    h1 {
+      font-size: 42px;
+      margin: 0 0 24px;
+      text-align: center;
     }
 
-    .option {
+    h2 { font-size: 36px; margin: 32px 0 16px; }
+    h3 { font-size: 30px; margin: 24px 0 12px; }
+
+    p {
+      font-size: 26px;
+      line-height: 1.35;
+      margin: 8px 0;
+    }
+
+    ul { margin: 8px 0 16px 22px; padding: 0; }
+    li { font-size: 26px; line-height: 1.35; margin-bottom: 4px; }
+
+    .question-text {
+      font-size: 30px;
+      margin-bottom: 24px;
+      line-height: 1.3;
+    }
+
+    .option,
+    .career-option {
+      width: 100%;
+      text-align: left;
       background: #ffffff;
       color: #0a45a0;
-      padding: 25px;
+      padding: 18px 20px;
       border-radius: 12px;
-      font-size: 32px;
-      margin: 20px 0;
+      font-size: 26px;
+      margin: 10px 0;
       cursor: pointer;
+      border: none;
       transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
       font-weight: 500;
     }
 
-    .option:hover {
+    .option:hover,
+    .career-option:hover {
       background: #dbe8ff;
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
-    #result-section {
-      display: none;
+    .option.correct { background: #c9f7c7; }
+    .option.wrong { background: #ffd1d1; }
+
+    .quiz-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    #ai-dept {
-      display: none;
-    }
-
-    .result-title {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 24px;
-    }
-
-    .result-text {
-      font-size: 32px;
-      margin-bottom: 32px;
+    .quiz-feedback,
+    .career-feedback {
+      font-size: 24px;
       line-height: 1.3;
+      min-height: 72px;
+      flex: 1 1 60%;
     }
 
-    .primary-link,
-    .secondary-link {
-      display: inline-block;
-      padding: 18px 32px;
+    .next-btn,
+    .career-next {
+      flex: 0 0 auto;
+      padding: 14px 24px;
       border-radius: 12px;
-      text-decoration: none;
-      font-size: 28px;
-      font-weight: 600;
-      margin-top: 8px;
-    }
-
-    .primary-link {
+      border: none;
       background: #ffffff;
       color: #0a45a0;
+      font-size: 26px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
     }
 
-    .primary-link:hover {
-      background: #dbe8ff;
-    }
+    .next-btn:disabled,
+    .career-next:disabled { opacity: 0.6; cursor: default; }
 
-    .secondary-link {
-      border: 2px solid #ffffff;
-      color: #ffffff;
-    }
+    .next-btn:not(:disabled):hover,
+    .career-next:not(:disabled):hover { background: #dbe8ff; }
 
-    .secondary-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .result-image {
-      margin-top: 32px;
-      max-width: 100%;
-      border-radius: 16px;
-      border: 2px solid #ffffff;
-    }
-
-    .section-title {
-      font-size: 44px;
-      font-weight: 700;
-      margin-bottom: 24px;
-    }
-
-    .placeholder {
-      font-size: 28px;
+    .quiz-meta,
+    .career-meta {
+      font-size: 22px;
+      margin-bottom: 10px;
+      text-align: right;
       opacity: 0.9;
-      margin-bottom: 32px;
     }
+
+    .hidden { display: none; }
+
+    .quiz-result,
+    .career-result { text-align: center; margin-top: 16px; }
+
+    .quiz-result p,
+    .career-result p { text-align: center; }
+
+    .primary-link {
+      display: inline-block;
+      padding: 14px 26px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 26px;
+      font-weight: 600;
+      margin-top: 16px;
+      background: #ffffff;
+      color: #0a45a0;
+      cursor: pointer;
+      border: none;
+    }
+
+    .primary-link:hover { background: #dbe8ff; }
+
+    .dept-card { margin-top: 24px; text-align: left; }
+    .dept-card h2 { margin-top: 0; }
+
+    .pro-question {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.4);
+    }
+
+    .pro-question-title { font-size: 26px; margin-bottom: 10px; }
+
+    .pro-option {
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      color: #0a45a0;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 24px;
+      margin: 6px 0;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .pro-option:hover { background: #dbe8ff; transform: translateY(-1px); }
+
+    .pro-feedback { font-size: 22px; margin-top: 8px; line-height: 1.3; }
   </style>
 </head>
 <body>
   <header>
-    <!-- Логотип Новосибирска -->
     <img class="logo" src="logo.png" alt="Новосибирск" />
   </header>
 
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-quiz" onclick="switchSection('quiz')">Викторина</button>
+    <button class="tab-btn" id="tab-career" onclick="switchSection('career')">Профориентация</button>
+  </div>
+
   <div class="wrapper">
-    <!-- Блок викторины -->
-    <div class="card" id="quiz-section">
-      <div class="question" id="q">1. Вам интересно работать с нейросетями, алгоритмами и данными?</div>
-      <div class="option" onclick="next(1)">Да, очень нравится</div>
-      <div class="option" onclick="next(0)">Скорее нет</div>
-    </div>
+    <!-- Раздел ВИКТОРИНА по ИИ -->
+    <div class="card" id="section-quiz">
+      <h1>Викторина по искусственному интеллекту</h1>
+      <div class="quiz-meta" id="quiz-progress"></div>
 
-    <!-- Блок результата для ИИ-отдела -->
-    <div class="card" id="result-section">
-      <div class="result-title">Вам явно интересен ИИ!</div>
-      <div class="result-text">
-        Давайте узнаем поподробнее про отдел технологий ИИ?
+      <div id="quiz-main">
+        <div class="question-text" id="quiz-question"></div>
+        <div id="quiz-options"></div>
+        <div class="quiz-footer">
+          <div class="quiz-feedback" id="quiz-feedback"></div>
+          <button class="next-btn" id="quiz-next" onclick="nextQuestion()" disabled>Далее</button>
+        </div>
       </div>
-      <a href="#ai-dept" class="primary-link" onclick="openAIDept(event)">
-        Перейти к отделу технологий ИИ
-      </a>
-      <!-- Вторая картинка на экране результата -->
-      <img
-        class="result-image"
-        src="logo.png"
-        alt="Отдел технологий ИИ"
-      />
+
+      <div id="quiz-result" class="quiz-result hidden">
+        <h2>Результат викторины</h2>
+        <p id="quiz-score-text"></p>
+        <p>Если вам интересно, как применяются цифровые технологии в реальных проектах, загляните в раздел профориентации.</p>
+        <button class="primary-link" onclick="switchSection('career')">Перейти к профориентации</button>
+        <button class="primary-link" onclick="restartQuiz()">Пройти викторину заново</button>
+      </div>
     </div>
 
-    <!-- Вкладка с отделом ИИ -->
-    <div class="card" id="ai-dept">
-      <div class="section-title">Отдел технологий искусственного интеллекта — это…</div>
-      <p class="placeholder">
-        Здесь позже появится подробное описание отдела технологий искусственного интеллекта.
-      </p>
-      <a href="#quiz" class="secondary-link" onclick="backToQuiz(event)">
-        Вернуться к викторине
-      </a>
+    <!-- Раздел ПРОФОРИЕНТАЦИЯ (викторина) -->
+    <div class="card hidden" id="section-career">
+      <h1>Профориентация</h1>
+      <div class="career-meta" id="career-progress"></div>
+
+      <div id="career-main">
+        <div class="question-text" id="career-question"></div>
+        <div id="career-options"></div>
+        <div class="quiz-footer">
+          <div class="career-feedback" id="career-feedback"></div>
+          <button class="career-next" id="career-next" onclick="nextCareerQuestion()" disabled>Далее</button>
+        </div>
+      </div>
+
+      <div id="career-result" class="career-result hidden">
+        <h2>Ваш отдел в Центре цифровой трансформации</h2>
+        <p id="career-score-text"></p>
+        <button class="primary-link" onclick="showChosenDept()">Узнать подробнее об отделе</button>
+        <button class="primary-link" onclick="restartCareer()">Пройти профориентацию заново</button>
+      </div>
+
+      <div id="dept-info" class="hidden">
+        <div id="dept-ai" class="dept-card hidden">
+          <h2>Отдел технологий искусственного интеллекта</h2>
+          <p>Отдел технологий искусственного интеллекта — это команда, которая разрабатывает и внедряет решения на основе нейросетей, машинного обучения и анализа данных для задач города и региона.</p>
+          <p>Здесь создаются и развиваются такие проекты, как голосовые сервисы, умные помощники, системы аналитики потоков данных и другие цифровые сервисы для жителей и специалистов.</p>
+        </div>
+
+        <div id="dept-rgis" class="dept-card hidden">
+          <h2>Региональная геоинформационная система Новосибирской области (РГИС НСО)</h2>
+          <p>РГИС НСО — это специальный цифровой инструмент для работы с картами и данными о территории региона.</p>
+          <p>Представьте себе огромную цифровую карту Новосибирской области, где собрана вся важная информация о регионе: где что находится, какие есть дороги, земли, здания, природные объекты и многое другое.</p>
+          <p>Система помогает:</p>
+          <ul>
+            <li>принимать решения по развитию региона;</li>
+            <li>упрощать работу с пространственными данными;</li>
+            <li>делать взаимодействие между ведомствами более эффективным;</li>
+            <li>обеспечивать доступ к важной информации для граждан и организаций.</li>
+          </ul>
+          <p><strong>Требования к кандидату:</strong> высшее образование в области ИТ, геоинформационных систем или смежных направлений.</p>
+          <p><strong>Профессиональные знания:</strong></p>
+          <ul>
+            <li>архитектура и функционирование геоинформационных систем;</li>
+            <li>программные средства и платформы ГИС;</li>
+            <li>системы управления базами данных;</li>
+            <li>стандарты информационного взаимодействия;</li>
+            <li>основы программирования (ООП);</li>
+            <li>методы геопространственного анализа;</li>
+            <li>принципы работы с пространственными данными.</li>
+          </ul>
+
+          
+
+          
+        </div>
+
+        <div id="dept-glonass" class="dept-card hidden">
+          <h2>Сеть спутниковых дифференциальных станций ГЛОНАСС (ССДС НСО)</h2>
+          <p>ССДС НСО — это современная система, которая помогает очень точно определять местоположение объектов на территории Новосибирской области.</p>
+          <p>Станции постоянно «общаются» со спутниками и между собой, собирают и передают данные в вычислительный центр, где они обрабатываются и используются для повышения точности координат.</p>
+          <p>Где применяется система:</p>
+          <ul>
+            <li>при межевании земель кадастровыми инженерами;</li>
+            <li>при строительстве объектов;</li>
+            <li>при геодезических изысканиях;</li>
+            <li>для точного позиционирования транспорта;</li>
+            <li>при мониторинге критически важных объектов.</li>
+          </ul>
+          <p>В области работает 31 станция, обеспечивая доступ к данным 24/7.</p>
+          <p><strong>Требования к кандидату:</strong> высшее техническое образование в области геодезии.</p>
+          <p><strong>Профессиональные знания:</strong></p>
+          <ul>
+            <li>организация и выполнение постоянных спутниковых измерений на базовых станциях;</li>
+            <li>настройка и эксплуатация геодезического оборудования ГНСС;</li>
+            <li>обработка спутниковых измерений в специализированном ПО;</li>
+            <li>формирование и передача корректирующих поправок;</li>
+            <li>преобразование систем координат.</li>
+          </ul>
+
+          <div class="pro-question">
+            <div class="pro-question-title">Для каких целей используют спутниковые дифференциальные станции?</div>
+            <button class="pro-option" onclick="answerPro('glonass1', true, 'Да, верно. Спутниковые дифференциальные станции используют в сферах, где требуется очень высокая точность определения координат.')">1. Используют в сферах, где нужна очень точная геолокация.</button>
+            <button class="pro-option" onclick="answerPro('glonass1', false, 'Нет, хотя спутниковые системы могут использоваться для точного времени, основная задача ССДС НСО — повышение точности координат.')">2. Для определения точного времени на часах</button>
+            <button class="pro-option" onclick="answerPro('glonass1', false, 'Нет, навигация в компьютерных играх не относится к задачам сети дифференциальных станций.')">3. Для навигации в компьютерных играх</button>
+            <div class="pro-feedback" id="glonass1-feedback"></div>
+          </div>
+        </div>
+
+        <button class="primary-link" onclick="restartCareer()">Пройти профориентацию заново</button>
+        <button class="primary-link" style="margin-top:24px;" onclick="showAllDepts()">Посмотреть все отделы</button>
+      </div>
     </div>
   </div>
 
   <script>
-    const questions = [
-      "1. Вам интересно работать с нейросетями, алгоритмами и данными?",
-      "2. Вам нравится экспериментировать с новыми цифровыми технологиями?",
-      "3. Хотите ли вы участвовать в разработке ИИ для решений городского уровня?",
-      "4. Любите ли вы искать закономерности и оптимизировать процессы?",
-      "5. Готовы ли вы изучать новые инструменты машинного обучения?"
-    ];
+    // --- ЛОГИКА ТАБОВ ---
+    function switchSection(section) {
+      const quizCard = document.getElementById('section-quiz');
+      const careerCard = document.getElementById('section-career');
+      const tabQuiz = document.getElementById('tab-quiz');
+      const tabCareer = document.getElementById('tab-career');
 
-    let index = 0;
-    let score = 0;
-
-    function showQuestion() {
-      document.getElementById("q").innerText = questions[index];
-    }
-
-    function next(point) {
-      score += point;
-      index++;
-
-      if (index >= questions.length) {
-        finish();
+      if (section === 'quiz') {
+        quizCard.classList.remove('hidden');
+        careerCard.classList.add('hidden');
+        tabQuiz.classList.add('active');
+        tabCareer.classList.remove('active');
       } else {
-        showQuestion();
+        quizCard.classList.add('hidden');
+        careerCard.classList.remove('hidden');
+        tabQuiz.classList.remove('active');
+        tabCareer.classList.add('active');
       }
     }
 
-    function finish() {
-      const quiz = document.getElementById("quiz-section");
-      const result = document.getElementById("result-section");
+    // --- ДАННЫЕ ВИКТОРИНЫ ПО ИИ ---
+    const quizData = [
+      {
+        q: '1. Как называется технология, которая позволяет ИИ понимать и генерировать человеческую речь?',
+        options: [
+          'А) Машинное зрение',
+          'Б) Нейросеть',
+          'В) Обработка естественного языка (NLP)',
+          'Г) Большие данные'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Обработка естественного языка (NLP) — это область искусственного интеллекта, которая помогает компьютерам понимать, интерпретировать и генерировать человеческую речь. Именно благодаря NLP такие системы, как голосовые помощники и чат-боты, могут общаться с нами почти как люди.'
+      },
+      {
+        q: '2. Как называется ситуация, когда искусственный интеллект дает неправильный, но убедительно звучащий ответ?',
+        options: [
+          'А) Ошибка вычислений',
+          'Б) Случайное совпадение',
+          'В) Галлюцинация ИИ',
+          'Г) Технический сбой'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Именно термин "галлюцинация ИИ" описывает случаи, когда нейросеть генерирует ложную информацию, но подает ее как достоверную. Это связано с тем, что ИИ работает с вероятностными моделями и иногда "додумывает" информацию, основанную на статистических закономерностях, а не на реальных фактах.'
+      },
+      {
+        q: '3. Какой из этих примеров НЕ является примером использования ИИ в повседневной жизни?',
+        options: [
+          'А) Рекомендации фильмов на КиноПоиск',
+          'Б) Голосовой помощник (Алиса)',
+          'В) Калькулятор на вашем телефоне',
+          'Г) Навигатор, который строит маршрут с учетом пробок'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Обычный калькулятор просто выполняет заранее запрограммированные арифметические операции по строгим формулам, не обучаясь и не адаптируясь к данным. В отличие от него, рекомендательные системы, голосовые помощники и умные навигаторы используют алгоритмы ИИ для анализа данных, обучения и принятия решений в изменчивых условиях.'
+      },
+      {
+        q: '4. Что такое "большие данные" в контексте ИИ?',
+        options: [
+          'А) Базы данных для хранения архивов',
+          'Б) Информация из социальных сетей и интернета',
+          'В) Огромные объемы информации для обучения ИИ',
+          'Г) Показатели с датчиков и измерительных приборов'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Большие данные — это огромные массивы структурированной и неструктурированной информации, которые ИИ анализирует для выявления закономерностей, обучения и принятия решений. Такие данные могут поступать из разных источников: транзакций, датчиков, социальных сетей, видео- и аудиозаписей.'
+      },
+      {
+        q: '5. Как называлась система, которую внедрили в 2021 году, чтобы врачи могли заполнять документы голосом?',
+        options: [
+          'А) Умный доктор',
+          'Б) Голосовой помощник',
+          'В) Голосовая клавиатура',
+          'Г) Электронный регистратор'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Система «Голосовая клавиатура» использовала технологии искусственного интеллекта для распознавания медицинской речи и преобразования её в текст. Это позволило врачам заполнять протоколы на 25% быстрее (с 9 до 6,5 минут), сократив время на бумажную работу и повысив эффективность приёма пациентов.'
+      },
+      {
+        q: '6. На какие вопросы помогает ответить робот «Николай» в Единой дежурно-диспетчерской службе Новосибирска?',
+        options: [
+          'А) О пробках и дорожной ситуации',
+          'Б) О графике работы общественного транспорта',
+          'В) О плановых и аварийных отключениях воды, света, отопления и газа',
+          'Г) О новых законах и нормативных актах'
+        ],
+        correct: 2,
+        explanation:
+          'Правильный ответ: В) Робот «Николай» в ЕДДС предоставляет информацию о плановых и аварийных отключениях систем жизнеобеспечения. Сервис работает в автоматическом режиме по телефону 218-00-51, позволяя жителям оперативно получать данные об отключениях воды, электричества, отопления и газа по конкретному адресу.'
+      }
+    ];
 
-      quiz.style.display = "none";
-      result.style.display = "block";
+    let currentQuestion = 0;
+    let quizScore = 0;
+    let answered = false;
+
+    const questionEl = document.getElementById('quiz-question');
+    const optionsEl = document.getElementById('quiz-options');
+    const feedbackEl = document.getElementById('quiz-feedback');
+    const nextBtn = document.getElementById('quiz-next');
+    const progressEl = document.getElementById('quiz-progress');
+
+    function renderQuestion() {
+      const data = quizData[currentQuestion];
+      questionEl.textContent = data.q;
+      progressEl.textContent = `Вопрос ${currentQuestion + 1} из ${quizData.length}`;
+      optionsEl.innerHTML = '';
+      feedbackEl.textContent = '';
+      nextBtn.disabled = true;
+      nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'Показать результат' : 'Далее';
+      answered = false;
+
+      data.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = opt;
+        btn.onclick = () => selectOption(btn, index);
+        optionsEl.appendChild(btn);
+      });
     }
 
-    function openAIDept(event) {
-      event.preventDefault();
-      document.getElementById("result-section").style.display = "none";
-      document.getElementById("ai-dept").style.display = "block";
+    function selectOption(button, index) {
+      if (answered) return;
+      answered = true;
+
+      const data = quizData[currentQuestion];
+      const allButtons = optionsEl.querySelectorAll('.option');
+      allButtons.forEach((btn, i) => {
+        if (i === data.correct) btn.classList.add('correct');
+        if (i === index && i !== data.correct) btn.classList.add('wrong');
+      });
+
+      if (index === data.correct) {
+        quizScore++;
+        feedbackEl.textContent = 'Верно! ' + data.explanation;
+      } else {
+        feedbackEl.textContent = 'Неверно. ' + data.explanation;
+      }
+
+      nextBtn.disabled = false;
     }
 
-    function backToQuiz(event) {
-      event.preventDefault();
-      index = 0;
-      score = 0;
-      showQuestion();
-      document.getElementById("ai-dept").style.display = "none";
-      document.getElementById("quiz-section").style.display = "block";
+    function nextQuestion() {
+      if (!answered) return;
+      currentQuestion++;
+      if (currentQuestion >= quizData.length) {
+        showQuizResult();
+      } else {
+        renderQuestion();
+      }
     }
+
+    function showQuizResult() {
+      document.getElementById('quiz-main').classList.add('hidden');
+      const resultBlock = document.getElementById('quiz-result');
+      const scoreText = document.getElementById('quiz-score-text');
+      scoreText.textContent = `Вы ответили правильно на ${quizScore} из ${quizData.length} вопросов.`;
+      resultBlock.classList.remove('hidden');
+      progressEl.textContent = '';
+    }
+
+    // --- ВИКТОРИНА ДЛЯ ПРОФОРИЕНТАЦИИ ---
+    const careerData = [
+      {
+        q: '1. Что вам кажется интереснее всего?',
+        options: [
+          'А) Придумывать, как нейросети и чат-боты могут помогать людям в городе.',
+          'Б) Работать с картами и видеть, как меняется территория региона.',
+          'В) Добиваться точности измерений до сантиметров с помощью спутников.'
+        ],
+        // 0 — ИИ, 1 — РГИС, 2 — ГЛОНАСС
+        scores: [1, 0, 0]
+      },
+      {
+        q: '2. Какой тип задач вам ближе?',
+        options: [
+          'А) Анализировать данные, обучать модели и улучшать алгоритмы.',
+          'Б) Планировать развитие территорий и анализировать пространственные объекты.',
+          'В) Настраивать оборудование и контролировать точность измерений.'
+        ],
+        scores: [1, 0, 0]
+      },
+      {
+        q: '3. Какой инструмент вы бы с интересом осваивали?',
+        options: [
+          'А) Платформы машинного обучения и библиотеку для нейросетей.',
+          'Б) Геоинформационные системы и сервисы работы с картами.',
+          'В) Геодезические приёмники и системы спутниковой навигации.'
+        ],
+        scores: [1, 0, 0]
+      },
+      {
+        q: '4. Какой результат работы радует вас больше всего?',
+        options: [
+          'А) Когда цифровой сервис с ИИ начинает помогать тысячам пользователей.',
+          'Б) Когда карта помогает принять верное решение по развитию города или района.',
+          'В) Когда координаты объекта определены с высокой точностью и по ним можно строить.'
+        ],
+        scores: [1, 0, 0]
+      }
+    ];
+
+    // Для профориентации мы просто считаем, сколько раз человек выбирал вариант А/Б/В
+    let careerQuestion = 0;
+    let careerScores = [0, 0, 0]; // [AI, RGIS, GLONASS]
+    let careerAnswered = false;
+
+    const careerQuestionEl = document.getElementById('career-question');
+    const careerOptionsEl = document.getElementById('career-options');
+    const careerFeedbackEl = document.getElementById('career-feedback');
+    const careerNextBtn = document.getElementById('career-next');
+    const careerProgressEl = document.getElementById('career-progress');
+
+    function renderCareerQuestion() {
+      const data = careerData[careerQuestion];
+      careerQuestionEl.textContent = data.q;
+      careerProgressEl.textContent = `Вопрос ${careerQuestion + 1} из ${careerData.length}`;
+      careerOptionsEl.innerHTML = '';
+      careerFeedbackEl.textContent = '';
+      careerNextBtn.disabled = true;
+      careerNextBtn.textContent = careerQuestion === careerData.length - 1 ? 'Узнать результат' : 'Далее';
+      careerAnswered = false;
+
+      data.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'career-option';
+        btn.textContent = opt;
+        btn.onclick = () => selectCareerOption(index);
+        careerOptionsEl.appendChild(btn);
+      });
+    }
+
+    function selectCareerOption(index) {
+      if (careerAnswered) return;
+      careerAnswered = true;
+
+      // индекс 0 -> ИИ, 1 -> РГИС, 2 -> ГЛОНАСС
+      careerScores[index] += 1;
+
+      let msg = '';
+      if (index === 0) {
+        msg = 'Похоже, вам ближе задачи, связанные с нейросетями и аналитикой данных.';
+      } else if (index === 1) {
+        msg = 'Похоже, вам интересно работать с картами и пространственной информацией.';
+      } else {
+        msg = 'Похоже, вам по душе точные измерения и работа со спутниковыми системами.';
+      }
+
+      careerFeedbackEl.textContent = msg;
+      careerNextBtn.disabled = false;
+    }
+
+    function nextCareerQuestion() {
+      if (!careerAnswered) return;
+      careerQuestion++;
+      if (careerQuestion >= careerData.length) {
+        showCareerResult();
+      } else {
+        renderCareerQuestion();
+      }
+    }
+
+    let chosenDept = 0; // 0 — ИИ, 1 — РГИС, 2 — ГЛОНАСС
+
+    function showCareerResult() {
+      document.getElementById('career-main').classList.add('hidden');
+      const block = document.getElementById('career-result');
+      const text = document.getElementById('career-score-text');
+
+      // Определяем отдел по максимальному баллу
+      const maxScore = Math.max(...careerScores);
+      chosenDept = careerScores.indexOf(maxScore);
+
+      let deptName = '';
+      if (chosenDept === 0) deptName = 'Отдел технологий искусственного интеллекта';
+      if (chosenDept === 1) deptName = 'Отдел региональной геоинформационной системы (РГИС НСО)';
+      if (chosenDept === 2) deptName = 'Отдел сети спутниковых дифференциальных станций ГЛОНАСС (ССДС НСО)';
+
+      text.textContent = `По вашим ответам вам ближе всего ${deptName}.`;
+      block.classList.remove('hidden');
+      careerProgressEl.textContent = '';
+    }
+
+    function showChosenDept() {
+      document.getElementById('dept-info').classList.remove('hidden');
+      document.getElementById('dept-ai').classList.add('hidden');
+      document.getElementById('dept-rgis').classList.add('hidden');
+      document.getElementById('dept-glonass').classList.add('hidden');
+
+      if (chosenDept === 0) document.getElementById('dept-ai').classList.remove('hidden');
+      if (chosenDept === 1) document.getElementById('dept-rgis').classList.remove('hidden');
+      if (chosenDept === 2) document.getElementById('dept-glonass').classList.remove('hidden');
+    }
+
+    function showAllDepts() {
+      document.getElementById('dept-info').classList.remove('hidden');
+      document.getElementById('dept-ai').classList.remove('hidden');
+      document.getElementById('dept-rgis').classList.remove('hidden');
+      document.getElementById('dept-glonass').classList.remove('hidden');
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      quizScore = 0;
+      answered = false;
+      document.getElementById('quiz-main').classList.remove('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+      renderQuestion();
+    }
+
+    function restartCareer() {
+      careerQuestion = 0;
+      careerScores = [0, 0, 0];
+      careerAnswered = false;
+      document.getElementById('career-main').classList.remove('hidden');
+      document.getElementById('career-result').classList.add('hidden');
+      document.getElementById('dept-info').classList.add('hidden');
+      renderCareerQuestion();
+    }
+
+    // ПРОФОРИЕНТАЦИОННЫЕ ВОПРОСЫ (внутри описаний)
+    function answerPro(id, isCorrect, text) {
+      const fb = document.getElementById(id + '-feedback');
+      if (!fb) return;
+      fb.textContent = (isCorrect ? 'Верно! ' : 'Неверно. ') + text;
+    }
+
+    // Инициализация обеих викторин
+    renderQuestion();
+    renderCareerQuestion();
   </script>
 </body>
 </html>
