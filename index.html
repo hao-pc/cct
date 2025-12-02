@@ -357,6 +357,207 @@
       border-radius: 18px;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
     }
+
+    /* ========================= */
+    /*   АДАПТИВКА — МОБИЛЬНЫЕ   */
+    /* ========================= */
+    @media (max-width: 600px) {
+
+      body {
+        overflow: auto;
+        padding-bottom: 40px;
+      }
+
+      header {
+        padding: 8px 12px;
+        gap: 12px;
+      }
+
+      .logo { height: 48px; }
+      .logo-min { height: 40px; }
+
+      .tabs {
+        padding: 0 10px 16px;
+        gap: 8px;
+      }
+
+      .tab-btn {
+        font-size: 18px;
+        padding: 10px 18px;
+        border-width: 1.5px;
+      }
+
+      .wrapper {
+        padding: 0 10px 20px;
+      }
+
+      .card {
+        padding: 24px 22px;
+        border-radius: 20px;
+        max-height: none;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+
+      .question-text {
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+
+      .option,
+      .career-option {
+        font-size: 18px;
+        padding: 14px 16px;
+        border-radius: 12px;
+      }
+
+      .next-btn,
+      .career-next,
+      .primary-link {
+        font-size: 18px;
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+
+      .quiz-meta,
+      .career-meta {
+        font-size: 16px;
+      }
+
+      .dept-card {
+        padding: 14px 16px;
+      }
+
+      .dept-card h2 {
+        font-size: 20px;
+      }
+
+      .certificate-image {
+        border-radius: 12px;
+      }
+
+      /* фоновые элементы */
+      .bg-strip-top {
+        height: 140px;
+      }
+
+      .bg-strip-bottom {
+        height: 220px;
+      }
+    }
+
+    /* =========================== */
+    /*   АДАПТИВКА — ПЛАНШЕТЫ      */
+    /* =========================== */
+    @media (min-width: 600px) and (max-width: 1024px) {
+
+      .card {
+        padding: 36px 40px;
+        border-radius: 24px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .question-text {
+        font-size: 26px;
+      }
+
+      .option,
+      .career-option {
+        font-size: 22px;
+        padding: 16px 18px;
+      }
+
+      .next-btn,
+      .career-next,
+      .primary-link {
+        font-size: 22px;
+        padding: 14px 20px;
+      }
+
+      .logo { height: 60px; }
+      .logo-min { height: 50px; }
+
+      .bg-strip-top { height: 180px; }
+      .bg-strip-bottom { height: 300px; }
+    }
+
+    /* =========================== */
+    /*  АДАПТИВКА — БОЛЬШИЕ ЭКРАНЫ */
+    /* =========================== */
+    @media (min-width: 1440px) {
+
+      .card {
+        max-width: 1100px;
+        padding: 56px 70px;
+        border-radius: 34px;
+      }
+
+      .tab-btn {
+        font-size: 30px;
+        padding: 20px 40px;
+      }
+
+      h1 {
+        font-size: 54px;
+      }
+
+      .question-text {
+        font-size: 38px;
+      }
+
+      .option,
+      .career-option {
+        font-size: 32px;
+        padding: 24px 28px;
+      }
+
+      .next-btn,
+      .career-next,
+      .primary-link {
+        font-size: 32px;
+        padding: 22px 32px;
+      }
+
+      .dept-card h2 {
+        font-size: 40px;
+      }
+
+      .bg-strip-top {
+        height: 260px;
+      }
+
+      .bg-strip-bottom {
+        height: 450px;
+      }
+    }
+
+    /* ====================================== */
+    /*   СУПЕРБОЛЬШИЕ МОНИТОРЫ 2K–4K (опция)  */
+    /* ====================================== */
+    @media (min-width: 1920px) {
+      .card {
+        transform: scale(1.15);
+      }
+    }
+
+    @media (min-width: 2560px) {
+      .card {
+        transform: scale(1.35);
+      }
+    }
+
+    @media (min-width: 3200px) {
+      .card {
+        transform: scale(1.5);
+      }
+    }
+
   </style>
 </head>
 <body>
