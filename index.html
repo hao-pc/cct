@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cookie Fest 2025 — Центр цифровой трансформации</title>
+  <title>Cookie Fest — Центр цифровой трансформации</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="logo.svg" />
+
   <style>
     :root {
       --fest-blue: #017aff;
@@ -28,12 +32,14 @@
       align-items: center;
       justify-content: center;
       color: var(--fest-white);
-      overflow: hidden;
+      /* было overflow: hidden; */
+      overflow-x: hidden;
+      overflow-y: auto;
       background: var(--fest-bg-dark);
       position: relative;
     }
 
-    /* фоновые молнии сверху и снизу */
+
     .bg-strip {
       position: absolute;
       left: 0;
@@ -137,15 +143,34 @@
     .card::-webkit-scrollbar { display: none; }
 
     h1 {
-      font-size: 44px;
       margin: 0 0 24px;
       text-align: center;
+      line-height: 1.2;
+    }
+
+    .form-section {
+      display: block;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .form-fest {
+      display: block;
+      font-size: 40px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    h2 { font-size: 36px; margin: 28px 0 16px; }
-    h3 { font-size: 30px; margin: 24px 0 12px; }
+    h2 {
+      font-size: 36px;
+      margin: 28px 0 16px;
+    }
+
+    h3 {
+      font-size: 30px;
+      margin: 24px 0 12px;
+    }
 
     p {
       font-size: 26px;
@@ -153,14 +178,14 @@
       margin: 8px 0;
     }
 
-    ul { margin: 8px 0 16px 22px; padding: 0; }
-    li { font-size: 26px; line-height: 1.35; margin-bottom: 4px; }
-
     .question-text {
       font-size: 32px;
       margin-bottom: 24px;
       line-height: 1.3;
       font-weight: 600;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .option,
@@ -350,19 +375,52 @@
       color: var(--fest-white);
     }
 
+    .certificate h3 {
+      font-size: 24px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: var(--fest-text-dark);
+    }
+
     .certificate-image {
       width: 100%;
       height: auto;
       display: block;
       border-radius: 18px;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* ========================= */
-    /*   АДАПТИВКА — МОБИЛЬНЫЕ   */
-    /* ========================= */
-    @media (max-width: 600px) {
+    .certificate-image:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(0,0,0,0.75);
+    }
 
+    /* полноэкранный режим сертификата / QR */
+    .certificate-fullscreen {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 90vw;
+      height: auto;
+      max-height: 90vh;
+      z-index: 9999;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+      border-radius: 18px;
+    }
+
+    .certificate-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9998;
+    }
+
+    /* Адаптивность */
+
+    @media (max-width: 600px) {
       body {
         overflow: auto;
         padding-bottom: 40px;
@@ -397,14 +455,16 @@
         max-height: none;
       }
 
-      h1 {
+      .form-section {
+        font-size: 16px;
+      }
+
+      .form-fest {
         font-size: 28px;
-        margin-bottom: 16px;
       }
 
       .question-text {
         font-size: 22px;
-        margin-bottom: 16px;
       }
 
       .option,
@@ -427,45 +487,18 @@
         font-size: 16px;
       }
 
-      .dept-card {
-        padding: 14px 16px;
-      }
-
-      .dept-card h2 {
-        font-size: 20px;
-      }
-
-      .certificate-image {
-        border-radius: 12px;
-      }
-
-      /* фоновые элементы */
-      .bg-strip-top {
-        height: 140px;
-      }
-
-      .bg-strip-bottom {
-        height: 220px;
-      }
+      .bg-strip-top { height: 140px; }
+      .bg-strip-bottom { height: 220px; }
     }
 
-    /* =========================== */
-    /*   АДАПТИВКА — ПЛАНШЕТЫ      */
-    /* =========================== */
     @media (min-width: 600px) and (max-width: 1024px) {
-
       .card {
         padding: 36px 40px;
         border-radius: 24px;
       }
 
-      h1 {
-        font-size: 34px;
-      }
-
-      .question-text {
-        font-size: 26px;
-      }
+      .form-fest { font-size: 34px; }
+      .question-text { font-size: 26px; }
 
       .option,
       .career-option {
@@ -487,77 +520,53 @@
       .bg-strip-bottom { height: 300px; }
     }
 
-    /* =========================== */
-    /*  АДАПТИВКА — БОЛЬШИЕ ЭКРАНЫ */
-    /* =========================== */
-    @media (min-width: 1440px) {
 
+    @media (min-width: 1440px) {
       .card {
-        max-width: 1100px;
-        padding: 56px 70px;
-        border-radius: 34px;
+        max-width: 900px;          /* было 1100px */
+        padding: 32px 40px;        /* меньше внутренних отступов */
+        border-radius: 28px;
       }
 
       .tab-btn {
-        font-size: 30px;
-        padding: 20px 40px;
+        font-size: 22px;           /* было 30px */
+        padding: 12px 24px;        /* меньше кнопки */
       }
 
-      h1 {
-        font-size: 54px;
+      .form-fest {
+        font-size: 34px;           /* было 48px */
       }
 
       .question-text {
-        font-size: 38px;
+        font-size: 26px;           /* было 38px */
       }
 
       .option,
       .career-option {
-        font-size: 32px;
-        padding: 24px 28px;
+        font-size: 20px;           /* было 32px */
+        padding: 16px 18px;
       }
 
       .next-btn,
       .career-next,
       .primary-link {
-        font-size: 32px;
-        padding: 22px 32px;
+        font-size: 20px;           /* было 32px */
+        padding: 14px 22px;
       }
 
       .dept-card h2 {
-        font-size: 40px;
+        font-size: 30px;           /* поменьше заголовки отделов */
       }
 
-      .bg-strip-top {
-        height: 260px;
-      }
-
-      .bg-strip-bottom {
-        height: 450px;
-      }
+      .bg-strip-top { height: 220px; }
+      .bg-strip-bottom { height: 380px; }
     }
 
-    /* ====================================== */
-    /*   СУПЕРБОЛЬШИЕ МОНИТОРЫ 2K–4K (опция)  */
-    /* ====================================== */
-    @media (min-width: 1920px) {
-      .card {
-        transform: scale(1.15);
-      }
-    }
 
-    @media (min-width: 2560px) {
-      .card {
-        transform: scale(1.35);
-      }
-    }
-
-    @media (min-width: 3200px) {
-      .card {
-        transform: scale(1.5);
-      }
-    }
-
+    /* ВАЖНО: убрал масштабирование .card на больших экранах,
+       чтобы форма не выглядела огромной при zoom 100%.
+       Блоки @media (min-width: 1920px/2560px/3200px) с transform: scale(...)
+       удалены. */
   </style>
 </head>
 <body>
@@ -565,7 +574,7 @@
   <div class="bg-strip bg-strip-bottom"></div>
 
   <header>
-    <img class="logo" src="cookiefest.png" alt="Cookie Fest 2025" />
+    <img class="logo" src="cookiefest.png" alt="Cookie Fest" />
     <img class="logo-min" src="min.png" alt="Минцифра" />
   </header>
 
@@ -581,7 +590,11 @@
   <div class="wrapper">
     <!-- ВИКТОРИНА -->
     <div class="card" id="section-quiz">
-      <h1>Викторина Cookie Fest 2025</h1>
+      <h1>
+        <span class="form-section">Викторина</span>
+        <span class="form-fest">Cookie Fest</span>
+      </h1>
+
       <div class="quiz-meta" id="quiz-progress"></div>
 
       <div id="quiz-main">
@@ -610,7 +623,11 @@
 
     <!-- ПРОФОРИЕНТАЦИЯ -->
     <div class="card hidden" id="section-career">
-      <h1>Профориентация Cookie Fest</h1>
+      <h1>
+        <span class="form-section">Профориентация</span>
+        <span class="form-fest">Cookie Fest</span>
+      </h1>
+
       <div class="career-meta" id="career-progress"></div>
 
       <div id="career-main">
@@ -632,7 +649,13 @@
       <div id="career-result" class="career-result hidden">
         <h2>Ваш отдел в Центре цифровой трансформации</h2>
         <p id="career-score-text"></p>
+
+        <!-- Блок под сертификат -->
         <div id="career-certificate" class="certificate"></div>
+
+        <!-- НОВЫЙ блок под фото с QR-кодами -->
+        <div id="career-qr" class="certificate"></div>
+
         <button class="primary-link" onclick="showChosenDept()">
           Узнать подробнее об отделе
         </button>
@@ -654,10 +677,10 @@
         <div id="dept-rgis" class="dept-card hidden">
           <h2>
             Региональная геоинформационная система и спутниковые сервисы
-            (РГИС НСО / ССДС НСО)
+            (РГИС НСО)
           </h2>
           <p>
-            Команда РГИСсоздаёт цифровую
+            Команда РГИС создаёт цифровую
             карту региона и обеспечивает точные координаты для кадастра,
             строительства, транспорта и мониторинга территорий.
           </p>
@@ -713,14 +736,15 @@
       }
     }
 
-    // --------- ВИКТОРИНА ---------
+    // ---------- ВИКТОРИНА ----------
+
     const fullQuizData = [
       // ОТИИ
       {
         q: "Чем в первую очередь занимается специалист по данным (Data Scientist)?",
         options: [
           "А) Обслуживает компьютеры и принтеры",
-          "Б) Анализирует данные и строит модели на основе ИИ",
+          "Б) Анализирует данные и строит модели на основе искусственного интеллекта",
           "В) Пишет новости для сайта",
           "Г) Организует мероприятия и встречи"
         ],
@@ -737,17 +761,17 @@
         correct: 0
       },
       {
-        q: "Какова основная задача Отдела технологий искусственного интеллекта (ОТИИ) в Центре цифровой трансформации?",
+        q: "Какая основная задача отдела технологий искусственного интеллекта (ОТИИ) в Центре цифровой трансформации?",
         options: [
           "А) Организовывать питание на мероприятиях",
-          "Б) Разрабатывать и внедрять решения на базе ИИ для города и региона",
+          "Б) Разрабатывать и внедрять решения на базе искусственного интеллекта для города и региона",
           "В) Следить за состоянием дорог вручную",
           "Г) Проводить экскурсии по городу"
         ],
         correct: 1
       },
       {
-        q: "Что такое чат-бот в городских сервисах?",
+        q: "Что такое чат-бот с применением технологий искусственного интеллекта?",
         options: [
           "А) Программа, которая автоматически отвечает на типовые вопросы жителей",
           "Б) Отдельный вид социальной сети",
@@ -769,7 +793,7 @@
 
       // РГИС / ССДС
       {
-        q: "Что такое РГИС Новосибирской области?",
+        q: "Что такое Региональная геоинформационная система (РГИС) Новосибирской области?",
         options: [
           "А) Система для управления электронными очередями",
           "Б) Большая цифровая карта региона с данными о территории",
@@ -799,7 +823,7 @@
         correct: 1
       },
       {
-        q: "Какой из примеров относится к использованию РГИС?",
+        q: "Какой из примеров относится к использованию Региональной геоинформационной системы (РГИС)?",
         options: [
           "А) Подбор музыки в плейлисте",
           "Б) Планирование новых дорог и объектов на территории района",
@@ -821,7 +845,7 @@
 
       // ЕКЦ
       {
-        q: "Какова основная задача Единого контактного центра (ЕКЦ)?",
+        q: "Какая основная задача Единого контактного центра (ЕКЦ)?",
         options: [
           "А) Проводить строительный контроль на объектах",
           "Б) Принимать и обрабатывать обращения жителей по разным каналам связи",
@@ -831,7 +855,7 @@
         correct: 1
       },
       {
-        q: "Что обычно не входит в омниканальное обслуживание в ЕКЦ?",
+        q: "Что обычно не входит в омниканальное обслуживание в Едином контактном центре (ЕКЦ)?",
         options: [
           "А) Звонки по телефону",
           "Б) Обращения через мессенджеры и чат-ботов",
@@ -851,7 +875,7 @@
         correct: 1
       },
       {
-        q: "Какую часть работы ЕКЦ можно автоматизировать с помощью ИИ-робота?",
+        q: "Какую часть работы Единого контактного центра (ЕКЦ) можно автоматизировать с помощью ИИ-робота?",
         options: [
           "А) Подписание официальных приказов",
           "Б) Ответы на типовые вопросы и маршрутизацию обращений",
@@ -861,7 +885,7 @@
         correct: 1
       },
       {
-        q: "Какой показатель показывает, насколько быстро жителю отвечают на обращение в ЕКЦ?",
+        q: "Какой показатель отражает, насколько быстро жителю отвечают на обращение в Едином контактном центре (ЕКЦ)?",
         options: [
           "А) Время ожидания ответа / скорость обработки обращения",
           "Б) Количество этажей в здании",
@@ -871,13 +895,14 @@
         correct: 0
       },
 
-      // Отдел реинжиниринга и цифровой трансформации (КЖ)
+      // РЦТ
       {
         q: "Что общего у студента, который оформил абонемент через «Карту жителя НСО», и у пирата из «Пиратов Карибского моря»?",
         options: [
           "А) Оба предпочитают нестандартные решения в повседневной жизни",
           "Б) Оба полагаются на карту как на ключевой инструмент для передвижения",
-          "В) Оба активно используют GPS для навигации"
+          "В) Оба активно используют GPS для навигации",
+          "Г) Оба всегда путешествуют только по морю"
         ],
         correct: 1
       },
@@ -886,16 +911,18 @@
         options: [
           "А) Активирует магнитную полосу для дополнительной идентификации",
           "Б) Автоматически распознаёт профиль пользователя и предоставляет доступ к абонементу в соответствии со льготой",
-          "В) Передаёт данные в центральную систему для последующей обработки"
+          "В) Передаёт данные в центральную систему для последующей обработки через несколько дней",
+          "Г) Блокирует карту до подтверждения по СМС"
         ],
         correct: 1
       },
       {
         q: "Какой вариант проезда самый выгодный, удобный и быстрый?",
         options: [
-          "А) Пешком – просто и без материальных вложений, но долго и устанешь",
-          "Б) С обычным пластиковым проездным – оформление с очередями и дополнительная пластиковая карта",
-          "В) Проездной в «Карте жителя НСО» – твой проездной, твоя банковская карта. Всё управляется онлайн: продление, смена карты, контроль списаний — в пару кликов"
+          "А) Пешком — просто и без материальных вложений",
+          "Б) С обычным пластиковым проездным — оформление с очередями и отдельная карта",
+          "В) Проездной в «Карте жителя НСО» — ваша банковская карта и проездной в одном, всё управляется онлайн",
+          "Г) Покупать каждую поездку отдельно за наличные"
         ],
         correct: 2
       },
@@ -903,19 +930,21 @@
         q: "Сколько необходимо привлечь человек, чтобы решить ваш вопрос по «Карте жителя НСО»?",
         options: [
           "А) Минимум трое — для координации между пользователем, техподдержкой и оператором",
-          "Б) Достаточно самого пользователя, который может задать вопрос по короткому номеру 110",
-          "В) Не менее пяти — с учётом внутренних согласований и регламентных процедур"
+          "Б) Достаточно звонка по номеру 110 от самого пользователя",
+          "В) Не менее пяти — с учётом внутренних согласований и процедур",
+          "Г) Обязательно требуется личное посещение офиса"
         ],
         correct: 1
       },
       {
-        q: "Чем отличается номер 110 от номера 112?",
+        q: "Для чего цифровая трансформация сервисов, таких как «Карта жителя НСО», нужна жителям?",
         options: [
-          "А) Номер 110 используется для неотложной медпомощи, 112 — для всех остальных случаев",
-          "Б) Номер 110 — это линия технической поддержки сервиса «Карта жителя НСО»; 112 — единый номер экстренных служб",
-          "В) Номер 110 — внутренний код госуслуги, 112 — международный стандарт вызова спасательных служб"
+          "А) Чтобы сделать интерфейсы максимально сложными",
+          "Б) Чтобы упростить процессы и сделать услуги быстрее и удобнее",
+          "В) Чтобы полностью отказаться от любых льгот",
+          "Г) Чтобы все обращения принимались только на бумаге"
         ],
-        correct: 1   // логически верный вариант
+        correct: 1
       }
     ];
 
@@ -1009,15 +1038,16 @@
       initQuiz();
     }
 
-    // --------- ПРОФОРИЕНТАЦИЯ ---------
+    // ---------- ПРОФОРИЕНТАЦИЯ ----------
+
     const careerData = [
       {
         q: "Какой тип задач вам ближе всего?",
         options: [
-          "А) Придумывать новые сервисы на основе ИИ и анализировать данные.",
+          "А) Придумывать новые сервисы на основе искусственного интеллекта и анализировать данные.",
           "Б) Работать с картами, координатами и пространственными объектами.",
           "В) Помогать людям, отвечая на их вопросы по телефону и в чатах.",
-          "Г) Развивать цифровую карту жителя и связанные с ней сервисы."
+          "Г) Развивать цифровые сервисы, такие как «Карта жителя НСО», и связанные с ними процессы."
         ]
       },
       {
@@ -1026,7 +1056,7 @@
           "А) Когда умный сервис сам подсказывает решения на основе данных.",
           "Б) Когда на карте появляется понятная схема развития района.",
           "В) Когда житель быстро получает понятный ответ на свой вопрос.",
-          "Г) Когда житель видит все свои льготы, поездки и сервисы в одном месте."
+          "Г) Когда житель видит в одном месте свои льготы, поездки и доступные сервисы."
         ]
       },
       {
@@ -1035,7 +1065,7 @@
           "А) Платформы машинного обучения, нейросети, аналитические панели.",
           "Б) Геоинформационные системы, спутниковые приёмники, карты местности.",
           "В) Системы обработки обращений, телефония, чат-боты и сценарии разговоров.",
-          "Г) Приложение карты жителя, интеграции с транспортом и городскими сервисами."
+          "Г) Приложение «Карты жителя НСО», интеграции с транспортом и городскими сервисами."
         ]
       },
       {
@@ -1044,21 +1074,21 @@
           "А) Когда экспериментируете с алгоритмами и улучшаете точность моделей.",
           "Б) Когда разбираетесь, как устроена территория и где что находится.",
           "В) Когда разговариваете с людьми и помогаете им разобраться с вопросом.",
-          "Г) Когда продумываете, как жителю удобнее пользоваться льготами и сервисами."
+          "Г) Когда продумываете, как жителю удобнее пользоваться льготами и цифровыми сервисами."
         ]
       },
       {
         q: "Какой проект вам интереснее всего представить на Cookie Fest?",
         options: [
-          "А) Чат-бот или голосовой помощник на основе ИИ для жителей города.",
+          "А) Чат-бот или голосовой помощник на основе искусственного интеллекта для жителей города.",
           "Б) Интерактивную карту района с точными границами и объектами.",
           "В) Умный сценарий контактного центра, который сокращает время ожидания.",
-          "Г) Новые возможности «Карты жителя НСО» с удобными сервисами в одном приложении."
+          "Г) Новые возможности «Карты жителя НСО» и других сервисов, которые упрощают жизнь жителя."
         ]
       }
     ];
 
-    // порядок отделов: [ОТИИ, РГИС/ССДС, ЕКЦ, реинжиниринг и ЦТ]
+    // отделы: [ОТИИ, РГИС/ССДС, ЕКЦ, РЦТ]
     let careerQuestion = 0;
     let careerScores = [0, 0, 0, 0];
     let careerAnswered = false;
@@ -1071,9 +1101,24 @@
     const deptIds = ["dept-otii", "dept-rgis", "dept-ekc", "dept-kj"];
     const deptNames = [
       "Отдел технологий искусственного интеллекта (ОТИИ)",
-      "Отдел региональной геоинформационной системы и спутниковых сервисов (РГИС НСО / ССДС НСО)",
+      "Отдел региональной геоинформационной системы и спутниковых сервисов (РГИС НСО)",
       "Единый контактный центр (ЕКЦ)",
-      "Отдел реинжиниринга и цифровой трансформации"
+      "Отдел реинжиниринга и цифровой трансформации (ОРЦТ)"
+    ];
+
+    const certFiles = [
+      "cert-otii.png",
+      "cert-rgis.png",
+      "cert-ekc.png",
+      "cert-rct.png"
+    ];
+
+    // НОВЫЕ файлы с QR-кодами под каждый отдел
+    const qrFiles = [
+      "qr-otii.png",
+      "qr-rgis.png",
+      "qr-ekc.png",
+      "qr-rct.png"
     ];
 
     let chosenDept = 0;
@@ -1124,15 +1169,27 @@
       const block = document.getElementById("career-result");
       const text = document.getElementById("career-score-text");
       const cert = document.getElementById("career-certificate");
+      const qrBlock = document.getElementById("career-qr");
 
       const maxScore = Math.max(...careerScores);
       chosenDept = careerScores.indexOf(maxScore);
 
       const deptName = deptNames[chosenDept];
-      text.textContent = `По вашим ответам вам ближе всего ${deptName}.`;
+      const certSrc = certFiles[chosenDept];
+      const qrSrc = qrFiles[chosenDept];
 
+      text.innerHTML = `По вашим ответам вам ближе всего <strong>${deptName}</strong>.`;
+
+      // Сертификат с подписью под конкретный отдел
       cert.innerHTML = `
-        <img src="Сертификат.png" alt="Сертификат" class="certificate-image" />
+        <h3>Ваш сертификат — ${deptName}</h3>
+        <img src="${certSrc}" alt="Сертификат участника: ${deptName}" class="certificate-image" onclick="toggleCertificateFullscreen(this)" />
+      `;
+
+      // QR-коды под тот же отдел
+      qrBlock.innerHTML = `
+        <h3>QR-код сертификата</h3>
+        <img src="${qrSrc}" alt="QR-коды для отдела: ${deptName}" class="certificate-image" onclick="toggleCertificateFullscreen(this)" />
       `;
 
       block.classList.remove("hidden");
@@ -1188,6 +1245,10 @@
       document.getElementById("career-result").classList.add("hidden");
       document.getElementById("dept-info").classList.add("hidden");
 
+      // чистим сертификат и QR-коды
+      document.getElementById("career-certificate").innerHTML = "";
+      document.getElementById("career-qr").innerHTML = "";
+
       deptIds.forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.classList.remove("highlight");
@@ -1199,6 +1260,45 @@
       renderCareerQuestion();
     }
 
+    // Увеличение / уменьшение сертификата и QR-изображений
+    function toggleCertificateFullscreen(img) {
+      const existing = document.getElementById("cert-fullscreen");
+      if (existing) {
+        existing.remove();
+        document.body.classList.remove("no-scroll");
+        return;
+      }
+
+      const overlay = document.createElement("div");
+      overlay.id = "cert-fullscreen";
+      overlay.style.position = "fixed";
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = "100vw";
+      overlay.style.height = "100vh";
+      overlay.style.background = "rgba(0,0,0,0.85)";
+      overlay.style.display = "flex";
+      overlay.style.alignItems = "center";
+      overlay.style.justifyContent = "center";
+      overlay.style.zIndex = 99999;
+      overlay.style.cursor = "zoom-out";
+
+      const big = document.createElement("img");
+      big.src = img.src;
+      big.style.maxWidth = "90vw";
+      big.style.maxHeight = "90vh";
+      big.style.borderRadius = "18px";
+      big.style.boxShadow = "0 30px 80px rgba(0,0,0,0.9)";
+      big.style.cursor = "zoom-out";
+
+      overlay.appendChild(big);
+      overlay.onclick = () => overlay.remove();
+
+      document.body.appendChild(overlay);
+      document.body.classList.add("no-scroll");
+    }
+
+    // Инициализация
     initQuiz();
     renderCareerQuestion();
   </script>
